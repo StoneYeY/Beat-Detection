@@ -1,0 +1,21 @@
+一、运行环境
+    python2，需要安装 numpy 模块，安装命令：pip install numpy
+    
+二、文件说明
+    beat_score_calc.py            单个结果文件评分
+    beat_scores_calc.py           多个结果文件批量评分
+	
+	beat_evaluation_toolbox.py    评分模块，参考：https://github.com/adamstark/Beat-Tracking-Evaluation-Toolbox
+
+三、使用示例
+    多个结果文件批量评分：
+    python2 beat_scores_calc.py --annotation_files_dir "/dataset/beat" --beat_files_dir "/data/output" --file_extension "beat"
+    
+    annotation_files_dir：标注的答案文件目录
+    beat_files_dir：      算法预测的结果文件目录
+    file_extension：      结果文件类型，beat 或 downbeat
+
+    单个结果文件评分：
+    python2 beat_score_calc.py --annotation_file "/dataset/beat/00019.beat" --beat_file "/data/output/00019.beat"
+    annotation_file：标注的答案文件
+    beat_file：      算法预测的结果文件
