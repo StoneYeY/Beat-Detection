@@ -7,7 +7,7 @@ Step2 Train: 训练模型BeatTrackingNet
 
 Step3 Beat_tracker: 输入Mel Spectrogram，得到beat times数据并保存
 
-Step4 Run：计算beat和step3一样，最后加上downbeat记录和结果提交
+Step4 Run: 计算beat和step3一样，最后加上downbeat记录和结果提交
 
 注：
 1.模型在model.py, 从BeatTrackingNet的前向传播理解调用关系
