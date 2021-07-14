@@ -1,0 +1,45 @@
+选手需要按如下规范将算法的可执行环境用docker镜像打包，并在大赛官网上传提交，后台服务器执行预测过程并做标准评分。
+
+一、docker打包说明
+    选手需提供可正常执行的docker镜像文件，命名格式为： IMAGE_ID.tar
+    其中，IMAGE_ID 为 docker镜像ID，我们可以使用 docker images 来列出本地主机上的镜像，使用 docker save 命令导出镜像为本地 tar 文件，然后将tar镜像文件上传。
+    
+    示例如下：
+    # docker images
+    REPOSITORY                                            TAG                             IMAGE ID            CREATED             SIZE
+    centos7_audioplus                                     demo                            53ecb5778214        3 seconds ago       228MB
+    
+    # docker save centos7_audioplus:demo > ./53ecb5778214.tar
+
+    
+二、docker 容器执行说明
+    评分时，会以统一格式命令去执行镜像中的程序，执行命令示例如下：
+    docker run --rm -v /dataset:/dataset:ro -v /output:/output -e LANG=C.UTF-8 --cpuset-cpus="0-8" -m 8G --network none --privileged centos7_audioplus:demo /bin/bash /opt/challenge.ai.mgtv/run.sh
+    
+    选手需要自行将程序入口设置为 /opt/challenge.ai.mgtv/run.sh，docker执行部分参数说明如下：
+    
+    /dataset：为测试集数据目录，目录内存放所有测试集数据文件，数据权限都为只读，具体格式如下：
+    dataset
+    ├── 00001.wav
+    ├── 00002.wav
+    ├── ...
+
+    /output：为结果输出目录，系统会自动按命令规范执行选手提供的镜像程序，程序需遍历对测试集数据文件进行处理，将结果输出到 /output 目录，每个测试集数据对应两个结果输出文本文件，分别为 beat 和 downbeat 结果，结果文本命名跟测试集文件名保存一致，格式后缀分别以 .beat 和 .downbeat 区分，文本内容为执行后的点位数据，需按时间点由小到大的顺序排列，按行分割，每行一个时间点数据，结果目录如下：
+    
+    output
+    ├── 00001.beat
+    ├── 00001.downbeat
+    ├── 00002.beat
+    ├── 00002.downbeat
+    ├── ...
+    
+    beat 和 downbeat 文件，结果内容格式示例如下：
+    0.600
+    1.240
+    7.800
+    13.920
+    17.240
+    ...
+    
+    --network：容器内禁止访问网络
+    --cpuset-cpus -m：设置容器所能使用的cpu 和 内存大小，我们将在同一配置下，对选手提交的镜像进行执行评分
