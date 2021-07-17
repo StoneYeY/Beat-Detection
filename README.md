@@ -1,7 +1,9 @@
 # Beat-Detection
 MGTV 音视频节拍检测比赛试用代码
 
-Step1 Dataprocess: 处理训练集、验证集数据，获取Mel Spectrogram
+Step0 Format_convert: 把jams格式批量转换，抓取time数据
+
+Step1 Data_process: 处理训练集、验证集数据，获取Mel Spectrogram (train和val数据分别跑对应process代码，val部分再跑dataload代码）
 
 Step2 Train: 训练模型BeatTrackingNet
 
